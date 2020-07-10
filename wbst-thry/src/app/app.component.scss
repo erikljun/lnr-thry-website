@@ -1,0 +1,51 @@
+a {
+    text-decoration: none;
+}
+
+.bg {
+    // /* The image used */
+    // background-image: url("../assets/Website\ background.jpg");
+    background-image: url("../assets/Website\ background.jpg");
+    display: block;
+    width: 100%;
+    padding-bottom: 100%;
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.top-bar {
+    padding-top: 30px;
+    margin-left: 5%;
+    margin-right: 5%;
+    height: 40px;
+}
+
+.logo {
+    width: auto;
+    height: 100%;
+    position: relative;
+    vertical-align: middle;
+    // left: 10%;
+    // top: 20%;
+}
+
+.icon {
+    color: #FFFFFF;
+    height: 100%;
+    overflow: auto;
+    padding-left: 3px;
+    padding-right: 3px;
+    // size: 2000%;
+    // overflow: hidden;
+    vertical-align: middle;
+}
+
+.socials {
+    vertical-align: middle;
+    overflow: auto;
+    height: 100%;
+    float: right;
+}
