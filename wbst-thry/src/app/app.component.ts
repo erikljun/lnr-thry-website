@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'LNR THRY';
+  useGraphics: boolean = true;
 }

@@ -1,15 +1,23 @@
-<div class="bg">
-  <div class="top-bar">
-    <img src="../assets/LNR THRY font.png" class="logo">
-
-    <div class="socials">
-      <a href="https://soundcloud.com/lnr-thry" class="fa fa-soundcloud icon" aria-hidden="true" target="_blank"></a>
-      <a href="https://open.spotify.com/artist/4znqH6EAN5LwCeQubGQUk3?si=MtV_zaHXTSCu7YTOPFfgXQ" class="fa fa-spotify icon" aria-hidden="true" target="_blank"></a>
-      <a href="https://lnrthry.bandcamp.com/releases" class="fa fa-bandcamp icon" aria-hidden="true" target="_blank"></a>
-      <a href="https://www.instagram.com/lnr.thry/" class="fa fa-instagram icon" aria-hidden="true" target="_blank"></a>
-      <a href="https://www.facebook.com/lnr.thry/" class="fa fa-facebook icon" aria-hidden="true" target="_blank"></a>
-
-    </div>
-
-  </div>
+<div *ngIf="useGraphics; else oldWebsite">
+  <app-lnr-graphics class="fullscreen"></app-lnr-graphics>
 </div>
+
+<ng-template #oldWebsite>
+  <div class="bg">
+    <div class="top-bar">
+      <img src="../assets/LNR THRY font.png" class="logo">
+  
+      <div class="socials">
+        <a href="https://soundcloud.com/lnr-thry" class="fa fa-soundcloud icon" aria-hidden="true" target="_blank"></a>
+        <a href="https://open.spotify.com/artist/4znqH6EAN5LwCeQubGQUk3?si=MtV_zaHXTSCu7YTOPFfgXQ" class="fa fa-spotify icon" aria-hidden="true" target="_blank"></a>
+        <a href="https://lnrthry.bandcamp.com/releases" class="fa fa-bandcamp icon" aria-hidden="true" target="_blank"></a>
+        <a href="https://www.instagram.com/lnr.thry/" class="fa fa-instagram icon" aria-hidden="true" target="_blank"></a>
+        <a href="https://www.facebook.com/lnr.thry/" class="fa fa-facebook icon" aria-hidden="true" target="_blank"></a>
+  
+      </div>
+  
+    </div>
+  
+  </div>
+</ng-template>
+
