@@ -1,6 +1,7 @@
 import * as Babylon from 'babylonjs';
 
 export class Playground {
+    // test comment
     public static CreateScene(engine: Babylon.Engine, canvas: HTMLCanvasElement): Babylon.Scene {
         // set up scene and camera
         let scene = new Babylon.Scene(engine);
