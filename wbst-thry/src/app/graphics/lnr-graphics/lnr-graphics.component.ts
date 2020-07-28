@@ -13,8 +13,8 @@ export class LnrGraphicsComponent implements OnInit {
 
   ngOnInit(): void {
     const canvasElement: HTMLCanvasElement = document.querySelector("#multiframe");
-    const engine = new Babylon.Engine(canvasElement);
-    const scene = Playground.CreateScene(engine, canvasElement);
+    const engine = new Babylon.Engine(canvasElement, true, { stencil: true });
+    const scene = Playground.createScene(engine, canvasElement);
     
     engine.runRenderLoop(() => scene.render());
     window.addEventListener('resize', () => engine.resize());
