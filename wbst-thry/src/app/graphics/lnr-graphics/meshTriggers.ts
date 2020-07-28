@@ -1,4 +1,5 @@
 import * as Babylon from 'babylonjs';
+import { FlyCamera } from 'babylonjs';
 
 // Makes use of actions https://doc.babylonjs.com/how_to/how_to_use_actions
 export default class MeshTriggers {
@@ -33,5 +34,33 @@ export default class MeshTriggers {
                 }
             )
         );
+    }
+
+    public static zoomOnClick(mesh: Babylon.Mesh, scene: Babylon.Scene): void {
+        mesh.actionManager.registerAction(
+            new Babylon.ExecuteCodeAction(
+                Babylon.ActionManager.OnPickTrigger,
+                () => {
+                    this.followMesh(mesh, scene);
+                }
+            )
+        );
+    }
+
+    private static followMesh(mesh: Babylon.Mesh, scene: Babylon.Scene, desiredDistance = 5, maxSpeed = .2): void {
+        scene.registerBeforeRender(() => {
+            let currentDistance = this.distance(mesh.position, scene.activeCamera.position);
+            let distanceFromTargetPosition = currentDistance - desiredDistance;
+            let speed = distanceFromTargetPosition > 0 ? Math.min(maxSpeed, distanceFromTargetPosition) : Math.max(-maxSpeed, distanceFromTargetPosition);
+            let direction = mesh.position.subtract(scene.activeCamera.position).normalize().multiplyByFloats(speed, speed, speed);
+            scene.activeCamera.position = scene.activeCamera.position.add(direction);
+
+            let cameraDirection = mesh.position.subtract((<FlyCamera>scene.activeCamera).getTarget()).normalize().multiplyByFloats(maxSpeed, maxSpeed, maxSpeed);
+            (<FlyCamera>scene.activeCamera).setTarget((<FlyCamera>scene.activeCamera).getTarget().add(cameraDirection));
+        });
+    }
+
+    private static distance(vec1: Babylon.Vector3, vec2: Babylon.Vector3): number {
+        return vec1.subtract(vec2).length();
     }
 }
