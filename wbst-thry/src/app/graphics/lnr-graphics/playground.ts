@@ -49,13 +49,15 @@ export class Playground {
         MeshTriggers.highlightOnHover(planet, highlightLayer, Babylon.Color3.Purple());
     }
 
-    
-
     private static buildMoon(scene: Babylon.Scene, highlightLayer: Babylon.HighlightLayer): void {
         // orbit parameters
         let radius = 30;
         let orbitTilt = -.2;
-        let speed = .001;
+        let orbitSpeed = .001;
+
+        // rotation parameters
+        let rotationAxis = new Babylon.Vector3(.5, 1, 0);
+        let rotationSpeed = .02;
 
         let moon = Babylon.MeshBuilder.CreateSphere('moon', { segments: 16, diameter: 1}, scene);
         moon.renderingGroupId = 1;
@@ -68,12 +70,15 @@ export class Playground {
         var tick = 0;
         scene.registerBeforeRender(() => {
 
-            moon.position.x = radius*Math.sin(speed*tick)*Math.cos(orbitTilt);
-            moon.position.y = radius*Math.sin(speed*tick)*Math.sin(orbitTilt);
-            moon.position.z = -radius*Math.cos(speed*tick);
+            moon.position.x = radius*Math.sin(orbitSpeed*tick)*Math.cos(orbitTilt);
+            moon.position.y = radius*Math.sin(orbitSpeed*tick)*Math.sin(orbitTilt);
+            moon.position.z = -radius*Math.cos(orbitSpeed*tick);
+
+            moon.rotationQuaternion = Babylon.Quaternion.RotationAxis(rotationAxis, tick*rotationSpeed);
 
             tick++;
         });
+
         moon.actionManager = new Babylon.ActionManager(scene);
         MeshTriggers.highlightOnHover(moon, highlightLayer, Babylon.Color3.Purple());
     }
