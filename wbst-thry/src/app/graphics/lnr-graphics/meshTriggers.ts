@@ -19,7 +19,7 @@ export default class MeshTriggers {
         mesh.actionManager.registerAction(
             new Babylon.ExecuteCodeAction(
                 Babylon.ActionManager.OnPointerOverTrigger,
-                function() {
+                () => {
                     highlightLayer.addMesh(mesh, color);
                 }
             )
@@ -29,7 +29,7 @@ export default class MeshTriggers {
         mesh.actionManager.registerAction(
             new Babylon.ExecuteCodeAction(
                 Babylon.ActionManager.OnPointerOutTrigger,
-                function() {
+                () => {
                     highlightLayer.removeMesh(mesh);
                 }
             )
