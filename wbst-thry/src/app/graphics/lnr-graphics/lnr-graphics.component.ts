@@ -18,19 +18,6 @@ export class LnrGraphicsComponent implements OnInit {
     
     engine.runRenderLoop(() => scene.render());
     window.addEventListener('resize', () => engine.resize());
-
-    // const canvas = new Canvas(canvasElement);
-    // // const canvas = document.querySelector('#multiframe');
-    // console.log('canvas: ', canvas);
-    // const gl: Context = canvas.context;
-
-    // if (gl === null) {
-    //   alert("Unable to initialize WebGL. Your browser or machine may not support it.");
-    //   return;
-    // }
-
-    // gl.about
-    // // const gl = canvas.getContext('webgl');
   }
 
 }

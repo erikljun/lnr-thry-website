@@ -21,7 +21,7 @@ export class Playground {
         // set up central planet
         this.buildCentralPlanet(scene, highlightLayer);
         // set up moon
-        let moon = this.buildMoon(scene, highlightLayer);
+        this.buildMoon(scene, highlightLayer);
 
         return scene;
     }
@@ -49,7 +49,7 @@ export class Playground {
         MeshTriggers.highlightOnHover(planet, highlightLayer, Babylon.Color3.Purple());
     }
 
-    private static buildMoon(scene: Babylon.Scene, highlightLayer: Babylon.HighlightLayer): Babylon.Mesh {
+    private static buildMoon(scene: Babylon.Scene, highlightLayer: Babylon.HighlightLayer): void {
         // orbit parameters
         let radius = 30;
         let orbitTilt = -.2;
@@ -82,6 +82,5 @@ export class Playground {
         moon.actionManager = new Babylon.ActionManager(scene);
         MeshTriggers.highlightOnHover(moon, highlightLayer, Babylon.Color3.Purple());
         MeshTriggers.zoomOnClick(moon, scene);
-        return moon;
     }
 }
