@@ -4,6 +4,7 @@ import { ActionManager, Color3, ExecuteCodeAction, FlyCamera, HighlightLayer, Me
 // Makes use of actions https://doc.babylonjs.com/how_to/how_to_use_actions
 export default class MeshTriggers {
 
+    // method registered to update the camera. Need to save it in order to unregister it
     private static registeredCameraUpdater: () => void;
     
     /**
@@ -39,6 +40,15 @@ export default class MeshTriggers {
         );
     }
 
+    /**
+     * Registers a click trigger on the given mesh to trigger the camera to follow the mesh. Clicking
+     * on the mesh again will reset the camera back to it's original position
+     * 
+     * @param mesh - Object the camera is to follow
+     * @param scene - The scene
+     * 
+     * @returns void
+     */
     public static zoomOnClick(mesh: Mesh, scene: Scene): void {
         mesh.actionManager.registerAction(
             new ExecuteCodeAction(
@@ -54,7 +64,16 @@ export default class MeshTriggers {
         );
     }
 
+    /**
+     * Registers a method called before each rendered frame to update the camera to follow the given mesh
+     * 
+     * @param mesh - The object the camera is to follow
+     * @param scene - The scene
+     * @param desiredDistance - The distance from the mesh the camera should follow. Default is 5
+     * @param maxSpeed - The maximum distance per frame the camera should travel when moving towards the mesh
+     */
     private static followMesh(mesh: Mesh, scene: Scene, desiredDistance = 5, maxSpeed = .2): void {
+        // unregister any existing update callbacks
         this.unregister(scene);
 
         this.registeredCameraUpdater = () => {
@@ -63,6 +82,11 @@ export default class MeshTriggers {
         scene.registerBeforeRender(this.registeredCameraUpdater);
     }
 
+    /**
+     * Registers a method called before each rendered frame to update the camera position to return to it's original position
+     * 
+     * @param scene The scene
+     */
     private static resetCamera(scene: Scene): void {
         this.unregister(scene);
 
@@ -72,6 +96,11 @@ export default class MeshTriggers {
         scene.registerBeforeRender(this.registeredCameraUpdater);
     }
 
+    /**
+     * Unregisters any existing camera update callback
+     * 
+     * @param scene The scene
+     */
     private static unregister(scene: Scene): void {
         if (this.registeredCameraUpdater) {
             scene.unregisterBeforeRender(this.registeredCameraUpdater);
@@ -79,6 +108,14 @@ export default class MeshTriggers {
         }
     }
 
+    /**
+     * Updates the camera position and target towards the given mesh for a single frame
+     * 
+     * @param mesh - The object the camera is to follow
+     * @param camera - The camera to be updated
+     * @param desiredDistance - The distance from the mesh the camera should follow. Default is 5
+     * @param maxSpeed - The maximum distance per frame the camera should travel when moving towards the mesh
+     */
     private static updateCamera(mesh: Mesh, camera: FlyCamera, desiredDistance = 5, maxSpeed = .2): void {
         // update camera position
         let currentDistance = this.distance(mesh.position, camera.position);
@@ -92,6 +129,14 @@ export default class MeshTriggers {
         camera.setTarget(camera.getTarget().add(cameraDirection));
     }
 
+    /**
+     * Updates the camera position and target towards the given position and direction for a single frame
+     * 
+     * @param camera - The camera to be updated
+     * @param desiredPosition - The position the camera should be moved to
+     * @param desiredDirection - The direction the camera should be pointing towards
+     * @param maxSpeed - The maximum distance per frame the camera should travel when moving towards desiredPosition
+     */
     private static moveCameraToPosition(camera: FlyCamera, desiredPosition = new Vector3(0, 5, -50), desiredDirection = Vector3.Zero(), maxSpeed = .2) {
         // update camera position
         let currentDistance = this.distance(camera.position, desiredPosition);
@@ -115,6 +160,14 @@ export default class MeshTriggers {
         }
     }
 
+    /**
+     * Calculates the distance between two vectors
+     * 
+     * @param vec1 - vector 1
+     * @param vec2 - vector 2
+     * 
+     * @returns - the distance between the two vectors
+     */
     private static distance(vec1: Vector3, vec2: Vector3): number {
         return vec1.subtract(vec2).length();
     }
