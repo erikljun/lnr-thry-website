@@ -121,7 +121,7 @@ export default class MeshTriggers {
         let targetRelativeToMesh = camera.position.subtract(mesh.position).normalize().multiplyByFloats(desiredDistance, desiredDistance, desiredDistance);
         let targetPosition = mesh.position.add(targetRelativeToMesh);
 
-        this.moveCameraToPosition(camera, targetPosition, mesh.position, maxSpeed)
+        this.moveCameraToPosition(camera, targetPosition, mesh.position, maxSpeed, false);
     }
 
     /**
