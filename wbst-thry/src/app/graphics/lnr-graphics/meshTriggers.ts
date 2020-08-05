@@ -74,7 +74,7 @@ export default class MeshTriggers {
      */
     private static followMesh(mesh: Mesh, scene: Scene, desiredDistance = 5, maxSpeed = .2): void {
         // unregister any existing update callbacks
-        this.unregister(scene);
+        this.unregisterCameraUpdater(scene);
 
         this.registeredCameraUpdater = () => {
             this.updateCamera(mesh, <FlyCamera>scene.activeCamera, desiredDistance, maxSpeed);
@@ -88,7 +88,7 @@ export default class MeshTriggers {
      * @param scene The scene
      */
     private static resetCamera(scene: Scene): void {
-        this.unregister(scene);
+        this.unregisterCameraUpdater(scene);
 
         this.registeredCameraUpdater = () => {
             this.moveCameraToPosition(<FlyCamera>scene.activeCamera);
@@ -101,7 +101,7 @@ export default class MeshTriggers {
      * 
      * @param scene The scene
      */
-    private static unregister(scene: Scene): void {
+    private static unregisterCameraUpdater(scene: Scene): void {
         if (this.registeredCameraUpdater) {
             scene.unregisterBeforeRender(this.registeredCameraUpdater);
             this.registeredCameraUpdater = null;
@@ -156,7 +156,7 @@ export default class MeshTriggers {
         if (currentDistance < .001) {
             camera.setTarget(Vector3.Zero());
             camera.position = desiredPosition;
-            this.unregister(camera.getScene());
+            this.unregisterCameraUpdater(camera.getScene());
         }
     }
 
