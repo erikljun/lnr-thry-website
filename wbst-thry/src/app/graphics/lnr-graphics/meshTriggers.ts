@@ -122,17 +122,6 @@ export default class MeshTriggers {
         let targetPosition = mesh.position.add(targetRelativeToMesh);
 
         this.moveCameraToPosition(camera, targetPosition, mesh.position, maxSpeed)
-
-        // // update camera position
-        // let currentDistance = this.distance(mesh.position, camera.position);
-        // let distanceFromTargetPosition = currentDistance - desiredDistance;
-        // let speed = distanceFromTargetPosition > 0 ? Math.min(maxSpeed, distanceFromTargetPosition) : Math.max(-maxSpeed, distanceFromTargetPosition);
-        // let direction = mesh.position.subtract(camera.position).normalize().multiplyByFloats(speed, speed, speed);
-        // camera.position = camera.position.add(direction);
-
-        // // update camera direction
-        // let cameraDirection = mesh.position.subtract(camera.getTarget()).normalize().multiplyByFloats(maxSpeed, maxSpeed, maxSpeed);
-        // camera.setTarget(camera.getTarget().add(cameraDirection));
     }
 
     /**
