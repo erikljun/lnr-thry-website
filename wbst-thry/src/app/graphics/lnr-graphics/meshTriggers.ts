@@ -117,16 +117,22 @@ export default class MeshTriggers {
      * @param maxSpeed - The maximum distance per frame the camera should travel when moving towards the mesh
      */
     private static updateCamera(mesh: Mesh, camera: FlyCamera, desiredDistance = 5, maxSpeed = .2): void {
-        // update camera position
-        let currentDistance = this.distance(mesh.position, camera.position);
-        let distanceFromTargetPosition = currentDistance - desiredDistance;
-        let speed = distanceFromTargetPosition > 0 ? Math.min(maxSpeed, distanceFromTargetPosition) : Math.max(-maxSpeed, distanceFromTargetPosition);
-        let direction = mesh.position.subtract(camera.position).normalize().multiplyByFloats(speed, speed, speed);
-        camera.position = camera.position.add(direction);
+        // calculate target position
+        let targetRelativeToMesh = camera.position.subtract(mesh.position).normalize().multiplyByFloats(desiredDistance, desiredDistance, desiredDistance);
+        let targetPosition = mesh.position.add(targetRelativeToMesh);
 
-        // update camera direction
-        let cameraDirection = mesh.position.subtract(camera.getTarget()).normalize().multiplyByFloats(maxSpeed, maxSpeed, maxSpeed);
-        camera.setTarget(camera.getTarget().add(cameraDirection));
+        this.moveCameraToPosition(camera, targetPosition, mesh.position, maxSpeed)
+
+        // // update camera position
+        // let currentDistance = this.distance(mesh.position, camera.position);
+        // let distanceFromTargetPosition = currentDistance - desiredDistance;
+        // let speed = distanceFromTargetPosition > 0 ? Math.min(maxSpeed, distanceFromTargetPosition) : Math.max(-maxSpeed, distanceFromTargetPosition);
+        // let direction = mesh.position.subtract(camera.position).normalize().multiplyByFloats(speed, speed, speed);
+        // camera.position = camera.position.add(direction);
+
+        // // update camera direction
+        // let cameraDirection = mesh.position.subtract(camera.getTarget()).normalize().multiplyByFloats(maxSpeed, maxSpeed, maxSpeed);
+        // camera.setTarget(camera.getTarget().add(cameraDirection));
     }
 
     /**
@@ -136,8 +142,14 @@ export default class MeshTriggers {
      * @param desiredPosition - The position the camera should be moved to
      * @param desiredDirection - The direction the camera should be pointing towards
      * @param maxSpeed - The maximum distance per frame the camera should travel when moving towards desiredPosition
+     * @param unregister - Whether the updater should be unregistered when the target is reached. Default is true
      */
-    private static moveCameraToPosition(camera: FlyCamera, desiredPosition = new Vector3(0, 5, -50), desiredDirection = Vector3.Zero(), maxSpeed = .2) {
+    private static moveCameraToPosition(
+            camera: FlyCamera, 
+            desiredPosition = new Vector3(0, 5, -50), 
+            desiredDirection = Vector3.Zero(), 
+            maxSpeed = .2, 
+            unregister = true) {
         // update camera position
         let currentDistance = this.distance(camera.position, desiredPosition);
         let distanceToTravelInCurrentFrame = Math.min(maxSpeed, currentDistance);
@@ -153,7 +165,7 @@ export default class MeshTriggers {
 
         // because of floating points we can't really check if it's at the desired position so when it's close enough
         // just set it exactly and unregister the animation
-        if (currentDistance < .001) {
+        if (unregister && currentDistance < .001) {
             camera.setTarget(Vector3.Zero());
             camera.position = desiredPosition;
             this.unregisterCameraUpdater(camera.getScene());
