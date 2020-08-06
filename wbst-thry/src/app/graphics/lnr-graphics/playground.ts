@@ -81,5 +81,6 @@ export class Playground {
 
         moon.actionManager = new Babylon.ActionManager(scene);
         MeshTriggers.highlightOnHover(moon, highlightLayer, Babylon.Color3.Purple());
+        MeshTriggers.zoomOnClick(moon, scene);
     }
 }
