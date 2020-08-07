@@ -90,7 +90,7 @@ export default class MeshTriggers {
      * 
      * @param scene The scene
      */
-    private static resetCamera(scene: Scene): void {
+    public static resetCamera(scene: Scene): void {
         this.unregisterCameraUpdater(scene);
 
         this.registeredCameraUpdater = () => {
