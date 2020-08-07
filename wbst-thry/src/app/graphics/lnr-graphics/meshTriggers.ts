@@ -60,7 +60,7 @@ export default class MeshTriggers {
                         LnrAudioEngine.stopSound();
                     } else {
                         this.followMesh(mesh, scene);
-                        LnrAudioEngine.playSound('../../assets/music/Can\'t Sleep.mp3', scene);
+                        LnrAudioEngine.playSound('../../assets/music/Can\'t Sleep.mp3', scene, mesh);
                     }
                 }
             )
