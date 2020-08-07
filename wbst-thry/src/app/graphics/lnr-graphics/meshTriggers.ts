@@ -1,5 +1,6 @@
 // import * as Babylon from 'babylonjs';
 import { ActionManager, Color3, ExecuteCodeAction, FlyCamera, HighlightLayer, Mesh, Scene, Vector3 } from 'babylonjs';
+import { LnrAudioEngine } from './lnrAudioEngine';
 
 // Makes use of actions https://doc.babylonjs.com/how_to/how_to_use_actions
 export default class MeshTriggers {
@@ -56,8 +57,10 @@ export default class MeshTriggers {
                 () => {
                     if (this.registeredCameraUpdater) {
                         this.resetCamera(scene);
+                        LnrAudioEngine.stopSound();
                     } else {
                         this.followMesh(mesh, scene);
+                        LnrAudioEngine.playSound('../../assets/music/Can\'t Sleep.mp3', scene);
                     }
                 }
             )
