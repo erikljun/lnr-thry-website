@@ -1,5 +1,6 @@
 import * as Babylon from 'babylonjs';
 import MeshTriggers from './meshTriggers';
+import 'babylonjs-loaders';
 
 export class Playground {
     public static createScene(engine: Babylon.Engine, canvas: HTMLCanvasElement): Babylon.Scene {
@@ -10,7 +11,7 @@ export class Playground {
         scene.activeCamera = camera
 
         camera.setTarget(Babylon.Vector3.Zero());
-        camera.attachControl(canvas, true);
+        camera.attachControl(true);
 
         // set up lighting
         let light = new Babylon.HemisphericLight('light1', new Babylon.Vector3(0, 1, 0), scene);
@@ -22,6 +23,8 @@ export class Playground {
         this.buildCentralPlanet(scene, highlightLayer);
         // set up moon
         this.buildMoon(scene, highlightLayer);
+        // set up obj
+        // this.buildObj(scene, highlightLayer);
 
         return scene;
     }
@@ -82,5 +85,9 @@ export class Playground {
         moon.actionManager = new Babylon.ActionManager(scene);
         MeshTriggers.highlightOnHover(moon, highlightLayer, Babylon.Color3.Purple());
         MeshTriggers.zoomOnClick(moon, scene);
+    }
+
+    private static buildObj(scene: Babylon.Scene, highlightLayer: Babylon.HighlightLayer): void {
+        let object = Babylon.SceneLoader.ImportMesh('', '../../assets/objects/y2.obj', '', scene);
     }
 }
