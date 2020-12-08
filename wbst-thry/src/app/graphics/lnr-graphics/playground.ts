@@ -24,7 +24,7 @@ export class Playground {
         // set up moon
         this.buildMoon(scene, highlightLayer);
         // set up obj
-        // this.buildObj(scene, highlightLayer);
+        this.buildObj(scene, highlightLayer);
 
         return scene;
     }
@@ -88,6 +88,53 @@ export class Playground {
     }
 
     private static buildObj(scene: Babylon.Scene, highlightLayer: Babylon.HighlightLayer): void {
-        let object = Babylon.SceneLoader.ImportMesh('', '../../assets/objects/y2.obj', '', scene);
+        let cone;
+
+        Babylon.SceneLoader.Append('../../assets/objects/y2.obj', '', scene, (scene) => {
+            cone = <Babylon.Mesh>scene.getMeshByName('Cone.001');
+
+            // cone.material = scene.getMaterialByName('Greebles');
+            // console.log(cone.material);
+
+            let radius = 25;
+            let orbitTilt = -.2;
+            let orbitSpeed = .0015;
+
+            let rotationAxis = new Babylon.Vector3(0, 1, 0);
+            let rotationSpeed = .02;
+
+            cone.renderingGroupId = 1;
+
+            let coneMaterial = new Babylon.StandardMaterial('coneMaterial', scene);
+            coneMaterial.diffuseTexture = new Babylon.Texture('../../assets/textures/greeble3.png', scene);
+            coneMaterial.emissiveTexture = new Babylon.Texture('../../assets/textures/greeble emit.png', scene);
+            coneMaterial.bumpTexture = new Babylon.Texture('../../assets/textures/greeble bump.png', scene);
+            // coneMaterial.specularTexture = new Babylon.Texture('../../assets/textures/greeble emit.png', scene);
+            // coneMaterial.specularPower = 100000;
+
+            cone.material = coneMaterial;
+
+            let glow = new Babylon.HighlightLayer('hl1', scene);
+            glow.addMesh(cone, new Babylon.Color3(.8, .1, .7), true);
+            glow.innerGlow = true;
+
+            console.log(cone);
+
+            var tick = 0;
+            scene.registerBeforeRender(() => {
+                cone.position.x = -radius*Math.sin(orbitSpeed*tick)*Math.cos(orbitTilt);
+                cone.position.y = -radius*Math.sin(orbitSpeed*tick)*Math.sin(orbitTilt);
+                cone.position.z = radius*Math.cos(orbitSpeed*tick);
+
+                cone.rotationQuaternion = Babylon.Quaternion.RotationAxis(rotationAxis, tick*rotationSpeed);
+
+                tick++;
+            });
+
+            cone.actionManager = new Babylon.ActionManager(scene);
+            MeshTriggers.highlightOnHover(cone, highlightLayer, Babylon.Color3.Purple());
+            MeshTriggers.zoomOnClick(cone, scene);
+
+        });
     }
 }

@@ -20,7 +20,7 @@ export class LnrGraphicsComponent implements OnInit {
     const scene = Playground.createScene(engine, canvasElement);
 
     // setup logo
-    let advancedTexture = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+    let advancedTexture = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", true, scene);
     let logo = new GUI.Image('logo', '../../assets/LNR THRY.png');
     logo.autoScale = true;
     logo.scaleX = .3;
