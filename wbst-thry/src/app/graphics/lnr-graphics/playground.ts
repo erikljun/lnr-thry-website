@@ -23,8 +23,8 @@ export class Playground {
         this.buildCentralPlanet(scene, highlightLayer);
         // set up moon
         this.buildMoon(scene, highlightLayer);
-        // set up obj
-        this.buildObj(scene, highlightLayer);
+        // set up cone
+        this.buildCone(scene, highlightLayer);
 
         return scene;
     }
@@ -87,7 +87,7 @@ export class Playground {
         MeshTriggers.zoomOnClick(moon, scene);
     }
 
-    private static buildObj(scene: Babylon.Scene, highlightLayer: Babylon.HighlightLayer): void {
+    private static buildCone(scene: Babylon.Scene, highlightLayer: Babylon.HighlightLayer): void {
         let cone;
 
         Babylon.SceneLoader.Append('../../assets/objects/y2.obj', '', scene, (scene) => {
