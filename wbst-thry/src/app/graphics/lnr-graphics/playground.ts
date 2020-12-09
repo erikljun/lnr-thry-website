@@ -93,9 +93,6 @@ export class Playground {
         Babylon.SceneLoader.Append('../../assets/objects/y2.obj', '', scene, (scene) => {
             cone = <Babylon.Mesh>scene.getMeshByName('Cone.001');
 
-            // cone.material = scene.getMaterialByName('Greebles');
-            // console.log(cone.material);
-
             let radius = 25;
             let orbitTilt = -.2;
             let orbitSpeed = .0015;
@@ -106,19 +103,15 @@ export class Playground {
             cone.renderingGroupId = 1;
 
             let coneMaterial = new Babylon.StandardMaterial('coneMaterial', scene);
-            coneMaterial.diffuseTexture = new Babylon.Texture('../../assets/textures/greeble3.png', scene);
-            coneMaterial.emissiveTexture = new Babylon.Texture('../../assets/textures/greeble emit.png', scene);
-            coneMaterial.bumpTexture = new Babylon.Texture('../../assets/textures/greeble bump.png', scene);
-            // coneMaterial.specularTexture = new Babylon.Texture('../../assets/textures/greeble emit.png', scene);
-            // coneMaterial.specularPower = 100000;
+            coneMaterial.diffuseTexture = new Babylon.Texture('../../assets/textures/cone texture.png', scene);
+            coneMaterial.emissiveTexture = new Babylon.Texture('../../assets/textures/cone emissive.png', scene);
+            coneMaterial.bumpTexture = new Babylon.Texture('../../assets/textures/cone bump.png', scene);
 
             cone.material = coneMaterial;
 
-            let glow = new Babylon.HighlightLayer('hl1', scene);
-            glow.addMesh(cone, new Babylon.Color3(.8, .1, .7), true);
-            glow.innerGlow = true;
-
-            console.log(cone);
+            let glowLayer = new Babylon.HighlightLayer('glowLayer', scene);
+            glowLayer.addMesh(cone, new Babylon.Color3(.8, .1, .7), true);
+            glowLayer.innerGlow = true;
 
             var tick = 0;
             scene.registerBeforeRender(() => {
@@ -134,7 +127,6 @@ export class Playground {
             cone.actionManager = new Babylon.ActionManager(scene);
             MeshTriggers.highlightOnHover(cone, highlightLayer, Babylon.Color3.Purple());
             MeshTriggers.zoomOnClick(cone, scene);
-
         });
     }
 }

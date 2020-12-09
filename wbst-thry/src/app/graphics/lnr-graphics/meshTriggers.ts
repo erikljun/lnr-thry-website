@@ -7,6 +7,7 @@ export default class MeshTriggers {
 
     // method registered to update the camera. Need to save it in order to unregister it
     private static registeredCameraUpdater: () => void;
+    private static selectedMeshName: string;
     
     /**
     * Registers actions to a given mesh to enable highlighting the object with a given color
@@ -56,8 +57,13 @@ export default class MeshTriggers {
                 ActionManager.OnPickTrigger,
                 () => {
                     if (this.registeredCameraUpdater) {
-                        this.resetCamera(scene);
-                        LnrAudioEngine.stopSound();
+                        if (this.selectedMeshName !== mesh.name) {
+                            LnrAudioEngine.stopSound();
+                            this.followMesh(mesh, scene);
+                        } else {
+                            LnrAudioEngine.stopSound();
+                            this.resetCamera(scene);
+                        }
                     } else {
                         this.followMesh(mesh, scene);
                         LnrAudioEngine.playSound('../../assets/music/Can\'t Sleep.mp3', scene);
@@ -82,6 +88,7 @@ export default class MeshTriggers {
         this.registeredCameraUpdater = () => {
             this.updateCamera(mesh, <FlyCamera>scene.activeCamera, desiredDistance, maxSpeed);
         }
+        this.selectedMeshName = mesh.name;
         scene.registerBeforeRender(this.registeredCameraUpdater);
     }
 
@@ -109,6 +116,7 @@ export default class MeshTriggers {
             scene.unregisterBeforeRender(this.registeredCameraUpdater);
             this.registeredCameraUpdater = null;
         }
+        this.selectedMeshName = null;
     }
 
     /**
