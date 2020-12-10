@@ -23,8 +23,8 @@ export class Playground {
         this.buildCentralPlanet(scene, highlightLayer);
         // set up moon
         this.buildMoon(scene, highlightLayer);
-        // set up cone
-        this.buildCone(scene, highlightLayer);
+        // set up pyramid
+        this.buildPyramid(scene, highlightLayer);
 
         return scene;
     }
@@ -87,11 +87,11 @@ export class Playground {
         MeshTriggers.zoomOnClick(moon, scene);
     }
 
-    private static buildCone(scene: Babylon.Scene, highlightLayer: Babylon.HighlightLayer): void {
-        let cone;
+    private static buildPyramid(scene: Babylon.Scene, highlightLayer: Babylon.HighlightLayer): void {
+        let pyramid;
 
-        Babylon.SceneLoader.Append('../../assets/objects/y2.obj', '', scene, (scene) => {
-            cone = <Babylon.Mesh>scene.getMeshByName('Cone.001');
+        Babylon.SceneLoader.Append('../../assets/objects/pyramid.obj', '', scene, (scene) => {
+            pyramid = <Babylon.Mesh>scene.getMeshByName('Pyramid.001');
 
             let radius = 25;
             let orbitTilt = -.2;
@@ -100,33 +100,33 @@ export class Playground {
             let rotationAxis = new Babylon.Vector3(0, 1, 0);
             let rotationSpeed = .02;
 
-            cone.renderingGroupId = 1;
+            pyramid.renderingGroupId = 1;
 
-            let coneMaterial = new Babylon.StandardMaterial('coneMaterial', scene);
-            coneMaterial.diffuseTexture = new Babylon.Texture('../../assets/textures/cone texture.png', scene);
-            coneMaterial.emissiveTexture = new Babylon.Texture('../../assets/textures/cone emissive.png', scene);
-            coneMaterial.bumpTexture = new Babylon.Texture('../../assets/textures/cone bump.png', scene);
+            let pyramidMaterial = new Babylon.StandardMaterial('pyramidMaterial', scene);
+            pyramidMaterial.diffuseTexture = new Babylon.Texture('../../assets/textures/pyramid texture.png', scene);
+            pyramidMaterial.emissiveTexture = new Babylon.Texture('../../assets/textures/pyramid emissive.png', scene);
+            pyramidMaterial.bumpTexture = new Babylon.Texture('../../assets/textures/pyramid bump.png', scene);
 
-            cone.material = coneMaterial;
+            pyramid.material = pyramidMaterial;
 
             let glowLayer = new Babylon.HighlightLayer('glowLayer', scene);
-            glowLayer.addMesh(cone, new Babylon.Color3(.8, .1, .7), true);
+            glowLayer.addMesh(pyramid, new Babylon.Color3(.8, .1, .7), true);
             glowLayer.innerGlow = true;
 
             var tick = 0;
             scene.registerBeforeRender(() => {
-                cone.position.x = -radius*Math.sin(orbitSpeed*tick)*Math.cos(orbitTilt);
-                cone.position.y = -radius*Math.sin(orbitSpeed*tick)*Math.sin(orbitTilt);
-                cone.position.z = radius*Math.cos(orbitSpeed*tick);
+                pyramid.position.x = -radius*Math.sin(orbitSpeed*tick)*Math.cos(orbitTilt);
+                pyramid.position.y = -radius*Math.sin(orbitSpeed*tick)*Math.sin(orbitTilt);
+                pyramid.position.z = radius*Math.cos(orbitSpeed*tick);
 
-                cone.rotationQuaternion = Babylon.Quaternion.RotationAxis(rotationAxis, tick*rotationSpeed);
+                pyramid.rotationQuaternion = Babylon.Quaternion.RotationAxis(rotationAxis, tick*rotationSpeed);
 
                 tick++;
             });
 
-            cone.actionManager = new Babylon.ActionManager(scene);
-            MeshTriggers.highlightOnHover(cone, highlightLayer, Babylon.Color3.Purple());
-            MeshTriggers.zoomOnClick(cone, scene);
+            pyramid.actionManager = new Babylon.ActionManager(scene);
+            MeshTriggers.highlightOnHover(pyramid, highlightLayer, Babylon.Color3.Purple());
+            MeshTriggers.zoomOnClick(pyramid, scene);
         });
     }
 }
