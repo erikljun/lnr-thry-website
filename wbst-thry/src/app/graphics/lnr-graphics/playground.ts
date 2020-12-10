@@ -1,5 +1,6 @@
 import * as Babylon from 'babylonjs';
 import MeshTriggers from './meshTriggers';
+import 'babylonjs-loaders';
 
 export class Playground {
     public static createScene(engine: Babylon.Engine, canvas: HTMLCanvasElement): Babylon.Scene {
@@ -10,7 +11,7 @@ export class Playground {
         scene.activeCamera = camera
 
         camera.setTarget(Babylon.Vector3.Zero());
-        camera.attachControl(canvas, true);
+        camera.attachControl(true);
 
         // set up lighting
         let light = new Babylon.HemisphericLight('light1', new Babylon.Vector3(0, 1, 0), scene);
@@ -22,6 +23,8 @@ export class Playground {
         this.buildCentralPlanet(scene, highlightLayer);
         // set up moon
         this.buildMoon(scene, highlightLayer);
+        // set up pyramid
+        this.buildPyramid(scene, highlightLayer);
 
         return scene;
     }
@@ -82,5 +85,48 @@ export class Playground {
         moon.actionManager = new Babylon.ActionManager(scene);
         MeshTriggers.highlightOnHover(moon, highlightLayer, Babylon.Color3.Purple());
         MeshTriggers.zoomOnClick(moon, scene);
+    }
+
+    private static buildPyramid(scene: Babylon.Scene, highlightLayer: Babylon.HighlightLayer): void {
+        let pyramid;
+
+        Babylon.SceneLoader.Append('../../assets/objects/pyramid.obj', '', scene, (scene) => {
+            pyramid = <Babylon.Mesh>scene.getMeshByName('Pyramid.001');
+
+            let radius = 25;
+            let orbitTilt = -.2;
+            let orbitSpeed = .0015;
+
+            let rotationAxis = new Babylon.Vector3(0, 1, 0);
+            let rotationSpeed = .02;
+
+            pyramid.renderingGroupId = 1;
+
+            let pyramidMaterial = new Babylon.StandardMaterial('pyramidMaterial', scene);
+            pyramidMaterial.diffuseTexture = new Babylon.Texture('../../assets/textures/pyramid texture.png', scene);
+            pyramidMaterial.emissiveTexture = new Babylon.Texture('../../assets/textures/pyramid emissive.png', scene);
+            pyramidMaterial.bumpTexture = new Babylon.Texture('../../assets/textures/pyramid bump.png', scene);
+
+            pyramid.material = pyramidMaterial;
+
+            let glowLayer = new Babylon.HighlightLayer('glowLayer', scene);
+            glowLayer.addMesh(pyramid, new Babylon.Color3(.8, .1, .7), true);
+            glowLayer.innerGlow = true;
+
+            var tick = 0;
+            scene.registerBeforeRender(() => {
+                pyramid.position.x = -radius*Math.sin(orbitSpeed*tick)*Math.cos(orbitTilt);
+                pyramid.position.y = -radius*Math.sin(orbitSpeed*tick)*Math.sin(orbitTilt);
+                pyramid.position.z = radius*Math.cos(orbitSpeed*tick);
+
+                pyramid.rotationQuaternion = Babylon.Quaternion.RotationAxis(rotationAxis, tick*rotationSpeed);
+
+                tick++;
+            });
+
+            pyramid.actionManager = new Babylon.ActionManager(scene);
+            MeshTriggers.highlightOnHover(pyramid, highlightLayer, Babylon.Color3.Purple());
+            MeshTriggers.zoomOnClick(pyramid, scene);
+        });
     }
 }
