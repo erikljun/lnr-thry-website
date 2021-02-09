@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LnrGraphicsComponent } from './lnr-graphics.component';
 
@@ -6,7 +6,7 @@ describe('LnrGraphicsComponent', () => {
   let component: LnrGraphicsComponent;
   let fixture: ComponentFixture<LnrGraphicsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LnrGraphicsComponent ]
     })
